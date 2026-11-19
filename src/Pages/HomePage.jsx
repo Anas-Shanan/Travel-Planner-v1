@@ -30,7 +30,7 @@ export default function HomePage() {
 
         console.log("Fetching countries from API");
         const response = await fetch(
-          "https://restcountries.com/v3.1/all?fields=name,capital,region,subregion,population,languages,currencies,flags,latlng"
+          "https://restcountries.conventus.de/v3.1/all?fields=name,capital,region,subregion,population,languages,currencies,flags,latlng"
         );
         if (!response.ok) {
           throw new Error("error fetching the data");
