@@ -36,7 +36,7 @@ export async function fetchOpenRouterResponse(messages) {
     body: JSON.stringify({
       model: MODEL,
       messages,
-      max_tokens: 250,
+      max_tokens: 2000,
     }),
   });
 
@@ -47,9 +47,17 @@ export async function fetchOpenRouterResponse(messages) {
   }
 
   const data = await response.json();
-  const content = data.choices?.[0]?.message?.content;
+  const choice = data.choices?.[0];
+  const content = choice?.message?.content;
   if (typeof content !== "string" || !content.trim()) {
-    throw new Error("OpenRouter returned an empty or invalid response.");
+    const completionTokens = data.usage?.completion_tokens ?? "unknown";
+    const reasoningTokens =
+      data.usage?.completion_tokens_details?.reasoning_tokens ?? "unknown";
+    const error = new Error(
+      `OpenRouter returned no text (model: ${data.model || "unknown"}, finish reason: ${choice?.finish_reason || "unknown"}, completion tokens: ${completionTokens}, reasoning tokens: ${reasoningTokens}).`
+    );
+    error.statusCode = 502;
+    throw error;
   }
 
   return content.trim();

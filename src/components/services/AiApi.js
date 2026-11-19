@@ -17,7 +17,7 @@ export const fetchChatResponse = async (countryName) =>
   requestChatResponse([
     {
       role: "user",
-      content: `Travel question about ${countryName}. Format as: Itinerary: [3-day plan]. Suggestions: [general tips].`,
+      content: `Create a practical 3-day travel itinerary for ${countryName}. Organize it by Day 1, Day 2, and Day 3, with a few concise activity suggestions for each day, plus brief general travel tips.`,
     },
   ]);
 
