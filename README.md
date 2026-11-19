@@ -14,13 +14,13 @@ See the deployed app on Vercel: https://travelplanner-pi.vercel.app/
 - Components under `src/components/` (common, Home, etc.)
 - Pages under `src/Pages/` (HomePage, CountryDetailsPage, FavoritesPage)
 - Context for favorites in `src/Context/`
-- AI features: a 3-day trip planner and a ChatGPT-powered chatbot (see `src/components/services/AiApi.js`)
+- AI features: a 3-day trip planner and a travel chatbot powered by OpenRouter (see `src/components/services/AiApi.js`)
 
 # Travel Planner
 
 A small React + Vite app to browse countries, view details, save favorites, and get AI-powered travel help.
 
-This demo app uses the Rest Countries API for country data and integrates a small AI assistant (ChatGPT) to generate 3-day itineraries and answer travel questions.
+This demo app uses the Rest Countries API for country data and integrates an OpenRouter AI assistant to generate 3-day itineraries and answer travel questions.
 
 ## Key features
 
@@ -29,7 +29,7 @@ This demo app uses the Rest Countries API for country data and integrates a smal
 - Favorites (persisted to localStorage) via a React Context (`src/Context/FavoritesContext.jsx`)
 - AI features:
   - 3-day trip planner (generates a concise 3-day itinerary for the selected country)
-  - ChatGPT-powered chatbot (conversational travel assistant shown on the country details page)
+  - OpenRouter-powered chatbot (conversational travel assistant shown on the country details page)
 
 ## Tech & notable deps
 
@@ -42,7 +42,7 @@ This demo app uses the Rest Countries API for country data and integrates a smal
 
 A small React + Vite app to browse countries, view details, save favorites, and get AI-powered travel help.
 
-This demo app uses the Rest Countries API for country data and integrates a small AI assistant (ChatGPT) to generate 3-day itineraries and answer travel questions.
+This demo app uses the Rest Countries API for country data and integrates an OpenRouter AI assistant to generate 3-day itineraries and answer travel questions.
 
 ## Key features
 
@@ -51,7 +51,7 @@ This demo app uses the Rest Countries API for country data and integrates a smal
 - Favorites (persisted to localStorage) via a React Context (`src/Context/FavoritesContext.jsx`)
 - AI features:
   - 3-day trip planner (generates a concise 3-day itinerary for the selected country)
-  - ChatGPT-powered chatbot (conversational travel assistant shown on the country details page)
+  - OpenRouter-powered chatbot (conversational travel assistant shown on the country details page)
 
 ## Tech & notable deps
 
@@ -69,7 +69,7 @@ src/
   components/
     common/                # CountryCard, Navbar, Footer
     Home/                  # HeroBanner, SearchBar, ContinentFilter
-    services/AiApi.js      # ChatGPT + itinerary helper (OpenAI integration)
+    services/AiApi.js      # OpenRouter chatbot and itinerary helper
     CountryDetails.jsx     # UI that calls AI and shows map
   Context/
     FavoritesContext.jsx   # Favorites state (localStorage)
@@ -92,14 +92,14 @@ npm install
 
 2. Add environment variables (for AI and Mapbox)
 
-Create a `.env` file in the project root (Vite requires env vars to start with `VITE_`):
+Create a `.env` file in the project root:
 
 ```env
-VITE_OPENAI_API_KEY=sk-...your-openai-key...
+OPENROUTER_API_KEY=your-openrouter-api-key
 VITE_MAPBOX_TOKEN=pk. ...optional Mapbox token...
 ```
 
-Do NOT commit `.env` to source control. Add it to `.gitignore`.
+Keep `.env` out of source control; it is already ignored by `.gitignore`. The OpenRouter key is used only by the server-side API and should not use the `VITE_` prefix. For Vercel deployments, also add `OPENROUTER_API_KEY` in the project's environment-variable settings.
 
 3. Run the dev server
 
@@ -118,12 +118,12 @@ npm run preview
 
 - 3-day trip planner: On a country's details page click the "✈️ Get 3-Day Travel Plan" button. The app calls `fetchChatResponse` in `src/components/services/AiApi.js` and displays the result in the details panel.
 
-- ChatGPT chatbot: The right-side chat panel on the country details page is a simple conversational UI. Type a question and submit; the app calls `fetchChatBotResponse` in `src/components/services/AiApi.js` using the same `VITE_OPENAI_API_KEY`.
+- Travel chatbot: The right-side chat panel on the country details page is a conversational UI. Type a question and submit; the app calls `fetchChatBotResponse` in `src/components/services/AiApi.js`.
 
 Notes:
 
-- The AI service expects the OpenAI key in `import.meta.env.VITE_OPENAI_API_KEY` (see `AiApi.js`).
-- Keep prompts concise; the app requests the `gpt-3.5-turbo` model with a token limit to keep responses short.
+- AI requests are sent to `/api/chat`, which uses OpenRouter's `openrouter/free` model. The API key remains server-side.
+- `npm run dev` also serves the API route through Vite's development middleware.
 
 ## Data & caching
 
